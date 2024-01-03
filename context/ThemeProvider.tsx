@@ -13,14 +13,15 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState("");
 
   const handleModeChange = () => {
-    if (mode === "dark") {
-      setMode("light");
-      document.documentElement.classList.add("light");
-      document.documentElement.classList.remove("dark");
-    } else {
+    if (
+      localStorage.theme === "dark" ||
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
       setMode("dark");
       document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
+    } else {
+      setMode("light");
+      document.documentElement.classList.remove("dark");
     }
   };
 
