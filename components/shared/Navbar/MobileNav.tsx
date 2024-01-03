@@ -81,29 +81,27 @@ export const MobileNav = () => {
         </Link>
         <section className="flex h-full flex-col gap-6 pt-16">
           <NavContent />
-          <SheetClose asChild>
-            <div className="mt-1 flex flex-col gap-3">
-              <SignedOut>
-                <Link href="/sign-in">
-                  <Button className="small-medium btn-secondary min-h-[40px] w-full rounded-lg px-4 py-3 shadow-none">
-                    <span className="primary-text-gradient"> Login </span>
-                  </Button>
-                </Link>
-              </SignedOut>
-            </div>
-          </SheetClose>
-          <SheetClose asChild>
-            <div className="mt-1 flex flex-col gap-3">
-              <SignedOut>
-                <Link href="/sign-up">
-                  <Button className="text-dark400_light900 small-medium btn-tertiary min-h-[40px] w-full rounded-lg px-4 py-3 shadow-none">
-                    Sign Up
-                  </Button>
-                </Link>
-              </SignedOut>
-            </div>
-          </SheetClose>
         </section>
+        <SignedOut>
+          <SheetClose asChild>
+            <div className="mt-1 flex flex-col gap-3">
+              <Link href="/sign-in">
+                <Button className="small-medium btn-secondary min-h-[40px] w-full rounded-lg px-4 py-3 shadow-none">
+                  <span className="primary-text-gradient"> Login </span>
+                </Button>
+              </Link>
+            </div>
+          </SheetClose>
+          <SheetClose asChild>
+            <div className="mt-1 flex flex-col gap-3">
+              <Link href="/sign-up">
+                <Button className="text-dark400_light900 small-medium btn-tertiary min-h-[40px] w-full rounded-lg px-4 py-3 shadow-none">
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
+          </SheetClose>
+        </SignedOut>
       </SheetContent>
     </Sheet>
   );

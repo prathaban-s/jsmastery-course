@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { Theme } from "./Theme";
 import { MobileNav } from "./MobileNav";
+import { GlobalSearch } from "../Search/GlobalSearch";
 
 export const Navbar = () => {
   return (
@@ -19,6 +20,7 @@ export const Navbar = () => {
           Code Palette
         </p>
       </Link>
+      <GlobalSearch />
 
       <div className="flex-between gap-5">
         <Theme />
