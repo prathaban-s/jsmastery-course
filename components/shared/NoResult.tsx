@@ -3,7 +3,14 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 
-const NoResult = () => {
+interface Props {
+  title: string;
+  description: string;
+  route: string;
+  btnTitle: string;
+}
+
+const NoResult = ({ title, description, route, btnTitle }: Props) => {
   return (
     <div className="flex-center mt-10 w-full flex-col">
       <Image
@@ -20,18 +27,14 @@ const NoResult = () => {
         height={200}
         className="hidden object-contain dark:block"
       />
-      <h2 className="h2-bold text-dark200_light900 mt-8">
-        There is no question to show
-      </h2>
+      <h2 className="h2-bold text-dark200_light900 mt-8">{title}</h2>
       <p className="body-regular text-dark500_light700 my-3.5 max-w-md text-center">
-        Be the first one to break the silence!. As a Question and kickstart the
-        discussion. Your query could be the next big thing others learn from.
-        Get Involved!
+        {description}
       </p>
 
-      <Link href="/">
+      <Link href={route}>
         <Button className="paragraph-medium mt-5 min-h-[46px] rounded-lg bg-primary-500 px-4 py-3 text-light-900 hover:bg-primary-500 dark:bg-primary-500 dark:text-light-900">
-          As a Question
+          {btnTitle}
         </Button>
       </Link>
     </div>

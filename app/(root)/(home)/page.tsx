@@ -1,3 +1,4 @@
+import QuestionCard from "@/components/card/QuestionCard";
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
@@ -50,7 +51,7 @@ const Home = () => {
       ],
       author: "Johne Doe",
       upvotes: 10,
-      views: 100,
+      views: 103462340,
       answers: 2,
       createdAt: "2024-01-03T15:30:00Z",
     },
@@ -82,7 +83,30 @@ const Home = () => {
       </div>
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {[].length > 0 ? questions.map((question) => "Question") : <NoResult />}
+        {questions.length > 0 ? (
+          questions.map((question) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              tags={question.tags}
+              author={question.author}
+              upvotes={question.upvotes}
+              views={question.views}
+              answers={question.answers}
+              createdAt={question.createdAt}
+            />
+          ))
+        ) : (
+          <NoResult
+            title="There is no question to show"
+            description="Be the first one to break the silence!. As a Question and kickstart the
+            discussion. Your query could be the next big thing others learn from.
+            Get Involved!"
+            btnTitle="Ask a Question"
+            route="/"
+          />
+        )}
       </div>
     </>
   );
