@@ -21,13 +21,24 @@ import { Input } from "@/components/ui/input";
 import { QuestionSchema } from "@/lib/validation";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
+import { createQuestion } from "@/lib/actions/question.action";
+import { useRouter } from "next/navigation";
 
-const Question = () => {
+interface Props {
+  mongoUserId: string;
+}
+
+const Question = ({ mongoUserId }: Props) => {
   const editorRef = useRef(null);
 
   const type: string = "new";
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const router = useRouter();
+
+  // Import it when its used
+  // const pathname = usePathname();
 
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
@@ -38,9 +49,17 @@ const Question = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof QuestionSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setIsSubmitting(true);
     try {
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+      });
+
+      router.push("/");
       // call API
     } catch (err) {
     } finally {
@@ -122,6 +141,8 @@ const Question = () => {
                   // @ts-ignore
                   (editorRef.current = editor)
                 }
+                onBlur={field.onBlur}
+                onEditorChange={(content) => field.onChange(content)}
                 initialValue=""
                 init={{
                   height: 500,
