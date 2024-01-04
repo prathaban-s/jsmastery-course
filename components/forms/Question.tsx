@@ -22,7 +22,7 @@ import { QuestionSchema } from "@/lib/validation";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { createQuestion } from "@/lib/actions/question.action";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   mongoUserId: string;
@@ -37,8 +37,7 @@ const Question = ({ mongoUserId }: Props) => {
 
   const router = useRouter();
 
-  // Import it when its used
-  // const pathname = usePathname();
+  const pathname = usePathname();
 
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
@@ -57,6 +56,7 @@ const Question = ({ mongoUserId }: Props) => {
         content: values.explanation,
         tags: values.tags,
         author: JSON.parse(mongoUserId),
+        path: pathname,
       });
 
       router.push("/");
