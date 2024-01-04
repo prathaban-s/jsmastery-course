@@ -13,9 +13,13 @@ export const connnectToDatabase = async () => {
     return console.log("MongoDB is already connected");
   }
   try {
-    await mongoose.connect(process.env.MONGODB_URL, {
-      dbName: "Project0",
-    });
+    // Using the mongourl directly for testing
+    await mongoose.connect(
+      "mongodb+srv://prathap9943015:qkqSTqSwQ7jCXDvi@js-mastery-course.znzdkwd.mongodb.net/?retryWrites=true&w=majority",
+      {
+        dbName: "Project0",
+      }
+    );
     isConnected = true;
     console.log("Mongo DB is Running");
   } catch (err) {
