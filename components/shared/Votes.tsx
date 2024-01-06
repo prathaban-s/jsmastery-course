@@ -3,6 +3,7 @@
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 import {
   downvoteQuestion,
+  toggleSaveQuestion,
   upvoteQuestion,
 } from "@/lib/actions/question.action";
 import { convertNumber } from "@/lib/utils";
@@ -66,7 +67,17 @@ const Votes = ({
     }
   };
 
-  const handleSave = () => {};
+  const handleSave = async () => {
+    if (!userId) {
+      return;
+    }
+
+    await toggleSaveQuestion({
+      questionId: itemId,
+      userId,
+      path,
+    });
+  };
   return (
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">

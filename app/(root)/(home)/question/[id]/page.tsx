@@ -54,7 +54,7 @@ const QuestionDetail = async ({ params }: Props) => {
               hasUpvoted={question.upvotes.includes(user._id)}
               downvotes={question.downvotes.length}
               hasDownvoted={question.downvotes.includes(user._id)}
-              hasSaved={user?.saved.includes(question.Id)}
+              hasSaved={user?.saved.includes(question._id.toString())}
             />
           </div>
         </div>
