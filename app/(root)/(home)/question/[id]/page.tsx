@@ -1,8 +1,12 @@
+import AllAnswers from "@/components/shared/AllAnswers";
+import Answer from "@/components/shared/Answer";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
 import { getQuestionById } from "@/lib/actions/question.action";
+import { getUserById } from "@/lib/actions/user.action";
 import { convertNumber, getTimestamp } from "@/lib/utils";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -14,6 +18,12 @@ interface Props {
 }
 
 const QuestionDetail = async ({ params }: Props) => {
+  const { userId } = auth();
+  let user;
+  if (userId) {
+    user = await getUserById({ userId });
+  }
+
   const question = await getQuestionById({ questionId: params.id });
   return (
     <>
@@ -70,6 +80,16 @@ const QuestionDetail = async ({ params }: Props) => {
           <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
         ))}
       </div>
+      <AllAnswers
+        questionId={JSON.stringify(question._id)}
+        userId={JSON.stringify(user._id)}
+        totalAnswers={question.answers.length}
+      />
+      <Answer
+        authorId={JSON.stringify(user._id)}
+        question={question.content}
+        questionId={JSON.stringify(question._id)}
+      />
     </>
   );
 };

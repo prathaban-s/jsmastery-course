@@ -23,12 +23,14 @@ import Image from "next/image";
 import { Badge } from "../ui/badge";
 import { createQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
+import { useTheme } from "@/context/ThemeProvider";
 
 interface Props {
   mongoUserId: string;
 }
 
 const Question = ({ mongoUserId }: Props) => {
+  const { mode } = useTheme();
   const editorRef = useRef(null);
 
   const type: string = "new";
@@ -174,6 +176,8 @@ const Question = ({ mongoUserId }: Props) => {
                     "removeformat | help",
                   content_style:
                     "body { font-family:Inetr,Arial,sans-serif; font-size:16px }",
+                  skin: mode === "dark" ? "oxide-dark" : "oxide",
+                  content_css: mode === "dark" ? "dark" : "light",
                 }}
               />
               <FormDescription className="body-regular mt-2.5 text-light-500">
