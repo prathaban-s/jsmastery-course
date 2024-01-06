@@ -3,6 +3,7 @@ import Answer from "@/components/shared/Answer";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
+import Votes from "@/components/shared/Votes";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { convertNumber, getTimestamp } from "@/lib/utils";
@@ -44,7 +45,18 @@ const QuestionDetail = async ({ params }: Props) => {
               {question.author.name}{" "}
             </p>
           </Link>
-          <div className="flex justify-end"> Voting </div>
+          <div className="flex justify-end">
+            <Votes
+              type="question"
+              itemId={question._id.toString()}
+              userId={user._id.toString()}
+              upvotes={question.upvotes.length}
+              hasUpvoted={question.upvotes.includes(user._id)}
+              downvotes={question.downvotes.length}
+              hasDownvoted={question.downvotes.includes(user._id)}
+              hasSaved={user?.saved.includes(question.Id)}
+            />
+          </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
           {question.title}
@@ -82,7 +94,7 @@ const QuestionDetail = async ({ params }: Props) => {
       </div>
       <AllAnswers
         questionId={JSON.stringify(question._id)}
-        userId={JSON.stringify(user._id)}
+        userId={user._id.toString()}
         totalAnswers={question.answers.length}
       />
       <Answer
