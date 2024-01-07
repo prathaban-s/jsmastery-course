@@ -20,7 +20,6 @@ export const createAnswer = async (params: CreateAnswerParams) => {
     await Question.findByIdAndUpdate(question, {
       $push: { answers: newAnswer._id },
     });
-    console.log(newAnswer);
     revalidatePath(path);
   } catch (err) {
     console.log(err);

@@ -148,3 +148,50 @@ export const getUserInfo = async (params: GetUserByIdParams) => {
     throw err;
   }
 };
+
+export const getQuestionsByUserId = async (params: {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+}) => {
+  try {
+    connnectToDatabase();
+
+    const { userId, page = 0, pageSize = 10 } = params;
+
+    const questions = await Question.find({ author: userId })
+      .populate({ path: "tags", model: Tag })
+      .populate({ path: "author", model: User })
+      .sort({ createdAt: -1 })
+      .limit(pageSize)
+      .skip(page * pageSize);
+
+    return questions;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const getAnswersByUserId = async (params: {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+}) => {
+  try {
+    connnectToDatabase();
+
+    const { userId, page = 0, pageSize = 10 } = params;
+
+    const asnwers = await Answer.find({ author: userId })
+      .populate("author", "_id name clerkId picture")
+      .sort({ createdAt: -1 })
+      .limit(pageSize)
+      .skip(page * pageSize);
+
+    return asnwers;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
