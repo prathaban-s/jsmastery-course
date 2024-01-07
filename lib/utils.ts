@@ -39,3 +39,10 @@ export const convertNumber = (number: number): string => {
     return number.toString();
   }
 };
+
+export const getMonthAndYearFromDate = (date: Date): string => {
+  const month = date.toLocaleDateString("default", { month: "long" });
+  const year = date.getFullYear();
+
+  return `${month} ${year}`;
+};

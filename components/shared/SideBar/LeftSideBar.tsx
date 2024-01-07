@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { sidebarLinks } from "@/constants";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut, useAuth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,6 +10,7 @@ import React from "react";
 
 export const LeftSideBar = () => {
   const pathName = usePathname();
+  const { userId } = useAuth();
   return (
     <section className="custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-r p-6 pt-36 shadow-light-300 max-sm:hidden lg:w-[266px] dark:shadow-none">
       <div className="flex flex-1 flex-col gap-6">
@@ -18,6 +19,13 @@ export const LeftSideBar = () => {
             (pathName.includes(sidebarLink.route) &&
               sidebarLink.route.length > 1) ||
             pathName === sidebarLink.route;
+          if (sidebarLink.route === "/profile") {
+            if (userId) {
+              sidebarLink.route = `${sidebarLink.route}/${userId}`;
+            } else {
+              return null;
+            }
+          }
           return (
             <React.Fragment key={sidebarLink.route}>
               <Link
