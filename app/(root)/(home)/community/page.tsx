@@ -1,6 +1,6 @@
 import { LocalSearch } from "@/components/shared/Search/LocalSearch";
 import React from "react";
-import { UserFilters } from "../../../constants/filter";
+import { UserFilters } from "../../../../constants/filter";
 import Filter from "@/components/shared/Filter";
 import { getAllUsers } from "@/lib/actions/user.action";
 import Link from "next/link";
