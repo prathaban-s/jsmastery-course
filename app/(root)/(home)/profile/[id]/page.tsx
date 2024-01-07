@@ -8,12 +8,15 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getMonthAndYearFromDate } from "@/lib/utils";
 import ProfileLink from "@/components/shared/ProfileLink";
+import Stats from "@/components/shared/Stats";
+import QuestionTab from "@/components/shared/QuestionTab";
+import AnswerTab from "@/components/shared/AnswerTab";
 
 const ProfileDetailPage = async ({ params }: URLProps) => {
   const { userId } = auth();
 
   const clerkId = params.id;
-  const { user } = await getUserInfo({
+  const { user, totalAnswers, totalQuestions } = await getUserInfo({
     userId: clerkId,
   });
   return (
@@ -78,7 +81,7 @@ const ProfileDetailPage = async ({ params }: URLProps) => {
           </SignedIn>
         </div>
       </div>
-      Stats
+      <Stats totalQuestions={totalQuestions} totalAnswers={totalAnswers} />
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-posts" className="w-[400px] flex-1">
           <TabsList className="background-light800_dark400 min-h-[42px] p-1">
@@ -90,9 +93,11 @@ const ProfileDetailPage = async ({ params }: URLProps) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="top-posts">
-            Make changes to your account here.
+            <QuestionTab />
           </TabsContent>
-          <TabsContent value="answers">Change your password here.</TabsContent>
+          <TabsContent value="answers">
+            <AnswerTab />
+          </TabsContent>
         </Tabs>
       </div>
     </>
