@@ -18,7 +18,7 @@ const AnswerTab = async ({ userId }: Props) => {
         answers.map((answer: any) => (
           <AnswerCard
             key={answer._id}
-            _id={answer._id}
+            _id={answer._id.toString()}
             content={answer.content}
             author={answer.author}
             upvotes={answer.upvotes.length}

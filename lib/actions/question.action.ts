@@ -4,6 +4,7 @@ import { connnectToDatabase } from "../mongoose";
 import Tag from "@/database/tag.model";
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
@@ -11,6 +12,8 @@ import {
 } from "./shared.types";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
+import Answer from "@/database/answer.model";
+import Interaction from "@/database/iteraction.model";
 
 export const getQuestions = async (params: GetQuestionsParams) => {
   try {
@@ -193,6 +196,44 @@ export const toggleSaveQuestion = async (params: ToggleSaveQuestionParams) => {
         { new: true }
       );
     }
+
+    revalidatePath(path);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const deleteQuestionById = async (params: DeleteQuestionParams) => {
+  try {
+    connnectToDatabase();
+    const { questionId, path } = params;
+
+    await Question.findByIdAndDelete(questionId);
+
+    await Answer.deleteMany({ question: questionId });
+
+    await Interaction.deleteMany({ question: questionId });
+
+    await Tag.updateMany(
+      { questions: questionId },
+      {
+        $pull: {
+          questions: questionId,
+        },
+      }
+    );
+
+    await User.updateMany(
+      {
+        saved: questionId,
+      },
+      {
+        $pull: {
+          saved: questionId,
+        },
+      }
+    );
 
     revalidatePath(path);
   } catch (err) {

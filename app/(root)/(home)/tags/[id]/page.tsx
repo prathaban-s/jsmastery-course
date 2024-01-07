@@ -33,7 +33,7 @@ const TagDetailPage = async ({ params }: Props) => {
           result.questions.map((question: any) => (
             <QuestionCard
               key={question._id}
-              _id={question._id}
+              _id={question._id.toString()}
               title={question.title}
               tags={question.tags}
               author={question.author}

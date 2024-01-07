@@ -3,6 +3,8 @@ import React from "react";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
 import { convertNumber, getTimestamp } from "@/lib/utils";
+import { SignedIn, auth } from "@clerk/nextjs";
+import EditDeleteButton from "../shared/EditDeleteButton";
 
 interface QuestionCardType {
   _id: string;
@@ -15,6 +17,7 @@ interface QuestionCardType {
     name: string;
     _id: string;
     picture: string;
+    clerkId: string;
   };
   upvotes: number;
   answers: number;
@@ -32,6 +35,8 @@ const QuestionCard = ({
   views,
   createdAt,
 }: QuestionCardType) => {
+  const { userId } = auth();
+  const showActionButtons = userId && userId === author.clerkId;
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11 ">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -45,6 +50,11 @@ const QuestionCard = ({
             </h3>
           </Link>
         </div>
+        <SignedIn>
+          {showActionButtons && (
+            <EditDeleteButton type="question" itemId={_id} />
+          )}
+        </SignedIn>
         {/* Nee to add delete icons */}
       </div>
       <div className="mt-3.5 flex flex-wrap gap-2">

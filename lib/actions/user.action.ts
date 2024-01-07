@@ -161,7 +161,11 @@ export const getQuestionsByUserId = async (params: {
 
     const questions = await Question.find({ author: userId })
       .populate({ path: "tags", model: Tag })
-      .populate({ path: "author", model: User })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id name clerkId picture",
+      })
       .sort({ createdAt: -1 })
       .limit(pageSize)
       .skip(page * pageSize);
