@@ -3,8 +3,8 @@
 import { deletAnswerById } from "@/lib/actions/answer.action";
 import { deleteQuestionById } from "@/lib/actions/question.action";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
+
 import React from "react";
 
 interface Props {

@@ -5,6 +5,7 @@ import Tag from "@/database/tag.model";
 import {
   CreateQuestionParams,
   DeleteQuestionParams,
+  EditQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
@@ -89,6 +90,29 @@ export async function createQuestion(params: CreateQuestionParams) {
     // Need to give reputaion for user
   } catch (err) {}
 }
+
+export const updateQuestionById = async (params: EditQuestionParams) => {
+  try {
+    connnectToDatabase();
+    const { questionId, path, title, content } = params;
+
+    const question = await Question.findById(questionId).populate({
+      path: "tags",
+      model: Tag,
+    });
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+    question.title = title;
+    question.content = content;
+    await question.save();
+    revalidatePath(path);
+  } catch (err) {
+    console.log("err");
+    console.log(err);
+  }
+};
 
 export const upvoteQuestion = async (params: QuestionVoteParams) => {
   try {

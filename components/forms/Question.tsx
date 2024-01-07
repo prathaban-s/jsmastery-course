@@ -21,19 +21,32 @@ import { Input } from "@/components/ui/input";
 import { QuestionSchema } from "@/lib/validation";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
-import { createQuestion } from "@/lib/actions/question.action";
+import {
+  createQuestion,
+  updateQuestionById,
+} from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/context/ThemeProvider";
 
 interface Props {
   mongoUserId: string;
+  type: string;
+  questionId?: string;
+  title?: string;
+  content?: string;
+  tags?: string[];
 }
 
-const Question = ({ mongoUserId }: Props) => {
+const Question = ({
+  mongoUserId,
+  type,
+  questionId,
+  title,
+  content,
+  tags,
+}: Props) => {
   const { mode } = useTheme();
   const editorRef = useRef(null);
-
-  const type: string = "new";
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -44,30 +57,40 @@ const Question = ({ mongoUserId }: Props) => {
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
     defaultValues: {
-      title: "",
-      explanation: "",
-      tags: [],
+      title: title || "dahdg",
+      explanation: content || "",
+      tags: tags && tags.length > 0 ? tags : [],
     },
   });
 
   async function onSubmit(values: z.infer<typeof QuestionSchema>) {
-    setIsSubmitting(true);
     try {
-      await createQuestion({
-        title: values.title,
-        content: values.explanation,
-        tags: values.tags,
-        author: JSON.parse(mongoUserId),
-        path: pathname,
-      });
+      setIsSubmitting(true);
+      if (type === "new") {
+        await createQuestion({
+          title: values.title,
+          content: values.explanation,
+          tags: values.tags,
+          author: JSON.parse(mongoUserId),
+          path: pathname,
+        });
 
-      router.push("/");
+        router.push("/");
+      } else {
+        await updateQuestionById({
+          questionId: "6599f16666f98180c4013dd9",
+          title: values.title,
+          content: values.explanation,
+          path: pathname,
+        });
+        router.push(`/question/${questionId || ""}`);
+      }
       // call API
     } catch (err) {
+      console.log(err);
     } finally {
       setIsSubmitting(false);
     }
-    console.log(values);
   }
 
   const handleInputKeyDown = (
@@ -143,9 +166,10 @@ const Question = ({ mongoUserId }: Props) => {
                   // @ts-ignore
                   (editorRef.current = editor)
                 }
+                id="tiny-editor"
                 onBlur={field.onBlur}
                 onEditorChange={(content) => field.onChange(content)}
-                initialValue=""
+                initialValue={content || ""}
                 init={{
                   height: 500,
                   menubar: false,
@@ -200,28 +224,30 @@ const Question = ({ mongoUserId }: Props) => {
                 <Input
                   className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   placeholder="Add tags"
+                  disabled={type === "edit"}
                   onKeyDown={(e) => handleInputKeyDown(e, field)}
                 />
               </FormControl>
               {field.value.length > 0 && (
                 <div className="flex-start mt-2.5 gap-2.5">
                   {field.value.map((tag: any) => (
-                    <>
-                      <Badge
-                        className="subtle-medium background-light800_dark300 text-light400_light500 flex-center gap-2 rounded-md border-none px-4 py-2 capitalize"
-                        key={tag}
-                      >
+                    <React.Fragment key={tag}>
+                      <Badge className="subtle-medium background-light800_dark300 text-light400_light500 flex-center gap-2 rounded-md border-none px-4 py-2 capitalize">
                         {tag}
-                        <Image
-                          src="/assets/icons/close.svg"
-                          alt="close"
-                          height={12}
-                          width={12}
-                          onClick={() => handleTagRemove(tag, field)}
-                          className="cursor-pointer object-contain invert-0 dark:invert"
-                        />
+                        {type === "edit" ? (
+                          <Image
+                            src="/assets/icons/close.svg"
+                            alt="close"
+                            height={12}
+                            width={12}
+                            onClick={() => handleTagRemove(tag, field)}
+                            className="cursor-pointer object-contain invert-0 dark:invert"
+                          />
+                        ) : (
+                          ""
+                        )}
                       </Badge>
-                    </>
+                    </React.Fragment>
                   ))}
                 </div>
               )}
