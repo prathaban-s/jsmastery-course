@@ -83,11 +83,13 @@ const Votes = ({
   };
 
   useEffect(() => {
-    viewQuestion({
-      questionId: itemId,
-      userId: userId || undefined,
-    });
-  }, [itemId, userId, path, route]);
+    if (type === "question") {
+      viewQuestion({
+        questionId: itemId,
+        userId: userId || undefined,
+      });
+    }
+  }, [type, itemId, userId, path, route]);
   return (
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">
