@@ -57,7 +57,7 @@ const Question = ({
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
     defaultValues: {
-      title: title || "dahdg",
+      title: title || "",
       explanation: content || "",
       tags: tags && tags.length > 0 ? tags : [],
     },
