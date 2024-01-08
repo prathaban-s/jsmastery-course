@@ -50,13 +50,6 @@ const ProfileDetailPage = async ({ params }: URLProps) => {
                 title={getMonthAndYearFromDate(user.joinDate)}
                 imgUrl="/assets/icons/calendar.svg"
               />
-              {user.portfoliowebsite && (
-                <ProfileLink
-                  imgUrl="/assets/icons/link.svg"
-                  href={user.portfolio}
-                  title="Portfolio"
-                />
-              )}
             </div>
             {user.bio && (
               <p className="paragraph-regular text-dark400_light800">
@@ -93,10 +86,10 @@ const ProfileDetailPage = async ({ params }: URLProps) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="top-posts">
-            <QuestionTab userId={user._id} />
+            <QuestionTab userId={user._id.toString()} />
           </TabsContent>
           <TabsContent value="answers">
-            <AnswerTab userId={user._id} />
+            <AnswerTab userId={user._id.toString()} />
           </TabsContent>
         </Tabs>
       </div>
