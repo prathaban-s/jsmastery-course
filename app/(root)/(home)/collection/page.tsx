@@ -9,7 +9,6 @@ import { auth } from "@clerk/nextjs";
 import React from "react";
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
-  // const result = await getQuestions({});
   const { userId } = auth();
   if (!userId) {
     return null;
@@ -17,6 +16,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
   const result = await getSavedQuestions({
     clerkId: userId,
     searchQuery: searchParams?.q,
+    filter: searchParams?.filter,
   });
 
   return (

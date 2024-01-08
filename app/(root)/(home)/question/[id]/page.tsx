@@ -16,9 +16,12 @@ interface Props {
   params: {
     id: string;
   };
+  searchParams: {
+    filter?: string;
+  };
 }
 
-const QuestionDetail = async ({ params }: Props) => {
+const QuestionDetail = async ({ params, searchParams }: Props) => {
   const { userId } = auth();
   let user;
   if (userId) {
@@ -96,6 +99,7 @@ const QuestionDetail = async ({ params }: Props) => {
         questionId={JSON.stringify(question._id)}
         userId={user._id.toString()}
         totalAnswers={question.answers.length}
+        filter={searchParams?.filter}
       />
       <Answer
         authorId={JSON.stringify(user._id)}
