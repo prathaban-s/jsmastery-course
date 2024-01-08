@@ -8,12 +8,17 @@ interface Props {
   params: {
     id: string;
   };
+  searchParams: {
+    q?: string;
+  };
 }
 
-const TagDetailPage = async ({ params }: Props) => {
+const TagDetailPage = async ({ params, searchParams }: Props) => {
   const tagId = params.id;
-  const result = await getQuestionByTagId({ tagId });
-  console.log(result);
+  const result = await getQuestionByTagId({
+    tagId,
+    searchQuery: searchParams?.q,
+  });
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">{result.title}</h1>

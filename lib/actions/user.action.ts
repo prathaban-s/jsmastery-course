@@ -106,7 +106,7 @@ export const getSavedQuestions = async (params: GetSavedQuestionsParams) => {
   try {
     connnectToDatabase();
 
-    const { clerkId, searchQuery } = params;
+    const { clerkId, searchQuery, pageSize = 10, page = 0 } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
@@ -117,6 +117,8 @@ export const getSavedQuestions = async (params: GetSavedQuestionsParams) => {
       match: query,
       options: {
         sort: { createdAt: -1 },
+        limit: pageSize,
+        skip: page * pageSize,
       },
       populate: [
         { path: "tags", model: Tag, select: "_id name" },

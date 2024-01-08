@@ -40,7 +40,18 @@ export const getAllTags = async (params: GetAllTagsParams) => {
   try {
     connnectToDatabase();
 
-    const tags = await Tag.find({});
+    const { searchQuery, pageSize = 10, page = 0 } = params;
+
+    const query: FilterQuery<typeof Tag> = {};
+
+    if (searchQuery) {
+      query.$or = [{ name: { $regex: new RegExp(searchQuery, "i") } }];
+    }
+
+    const tags = await Tag.find(query)
+      .sort({ createdAt: -1 })
+      .limit(pageSize)
+      .skip(page * pageSize);
 
     return { tags };
   } catch (err) {
