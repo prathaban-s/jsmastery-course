@@ -31,9 +31,21 @@ export async function getUserById(params: GetUserByIdParams) {
 export const getAllUsers = async (params: GetAllUsersParams) => {
   try {
     connnectToDatabase();
-    // const { page = 1, pageSize = 20, filter, searchQuery } = params;
+    const { page = 0, pageSize = 10, searchQuery } = params;
 
-    const users = await User.find({}).sort({ createdAt: -1 });
+    const query: FilterQuery<typeof User> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { name: { $regex: new RegExp(searchQuery, "i") } },
+        { username: { $regex: new RegExp(searchQuery, "i") } },
+      ];
+    }
+
+    const users = await User.find(query)
+      .sort({ createdAt: -1 })
+      .limit(pageSize)
+      .skip(page * pageSize);
     return { users };
   } catch (err) {
     console.log(err);
