@@ -40,7 +40,7 @@ export const getAllTags = async (params: GetAllTagsParams) => {
   try {
     connnectToDatabase();
 
-    const { searchQuery, pageSize = 10, page = 0, filter } = params;
+    const { searchQuery, pageSize = 10, page = 1, filter } = params;
 
     const query: FilterQuery<typeof Tag> = {};
 
@@ -78,9 +78,13 @@ export const getAllTags = async (params: GetAllTagsParams) => {
     const tags = await Tag.find(query)
       .sort(sortOptions)
       .limit(pageSize)
-      .skip(page * pageSize);
+      .skip((page - 1) * pageSize);
 
-    return { tags };
+    const totalTags = await Tag.countDocuments(query);
+
+    const isNext = totalTags > (page - 1) * pageSize + tags.length;
+
+    return { tags, isNext };
   } catch (err) {
     console.log(err);
     throw err;
@@ -91,7 +95,7 @@ export const getQuestionByTagId = async (params: GetQuestionsByTagIdParams) => {
   try {
     connnectToDatabase();
 
-    const { tagId, page = 0, pageSize = 10, searchQuery } = params;
+    const { tagId, page = 1, pageSize = 10, searchQuery } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
       ? { title: { $regex: new RegExp(searchQuery, "i") } }
@@ -103,7 +107,7 @@ export const getQuestionByTagId = async (params: GetQuestionsByTagIdParams) => {
       options: {
         sort: { createdAt: -1 },
         limit: pageSize,
-        skip: pageSize * page,
+        skip: pageSize * (page - 1),
       },
       populate: [
         { path: "tags", model: Tag, select: "_id name" },

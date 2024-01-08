@@ -10,6 +10,7 @@ interface Props {
   };
   searchParams: {
     q?: string;
+    page?: string;
   };
 }
 
@@ -18,6 +19,7 @@ const TagDetailPage = async ({ params, searchParams }: Props) => {
   const result = await getQuestionByTagId({
     tagId,
     searchQuery: searchParams?.q,
+    page: searchParams?.page ? +searchParams?.page : 1,
   });
   return (
     <>

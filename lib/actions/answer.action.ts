@@ -33,7 +33,7 @@ export const getAnswersForQuestion = async (params: GetAnswersParams) => {
   try {
     connnectToDatabase();
 
-    const { questionId, page = 0, pageSize = 10, sortBy } = params;
+    const { questionId, page = 1, pageSize = 10, sortBy } = params;
 
     let sortOptions = {};
 
@@ -68,7 +68,7 @@ export const getAnswersForQuestion = async (params: GetAnswersParams) => {
       .populate("author", "_id name clerkId picture")
       .sort(sortOptions)
       .limit(pageSize)
-      .skip(page * pageSize);
+      .skip((page - 1) * pageSize);
 
     return { answers };
   } catch (err) {
