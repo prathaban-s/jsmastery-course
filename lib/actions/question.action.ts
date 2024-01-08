@@ -265,3 +265,17 @@ export const deleteQuestionById = async (params: DeleteQuestionParams) => {
     throw err;
   }
 };
+
+export const getTopQuestion = async () => {
+  try {
+    connnectToDatabase();
+
+    const topQuestions = await Question.find({})
+      .sort({ views: -1, upvotes: -1 })
+      .limit(5);
+    return topQuestions;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
