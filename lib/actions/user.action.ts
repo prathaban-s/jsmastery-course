@@ -31,7 +31,7 @@ export async function getUserById(params: GetUserByIdParams) {
 export const getAllUsers = async (params: GetAllUsersParams) => {
   try {
     connnectToDatabase();
-    const { page = 0, pageSize = 10, searchQuery } = params;
+    const { page = 0, pageSize = 10, searchQuery, filter } = params;
 
     const query: FilterQuery<typeof User> = {};
 
@@ -42,8 +42,25 @@ export const getAllUsers = async (params: GetAllUsersParams) => {
       ];
     }
 
+    let sortOptions = {};
+    if (filter) {
+      switch (filter) {
+        case "new_users":
+          sortOptions = { joinedAt: -1 };
+          break;
+        case "old_users":
+          sortOptions = { joinedAt: 1 };
+          break;
+        case "top_contributors":
+          sortOptions = { reputation: -1 };
+          break;
+        default:
+          break;
+      }
+    }
+
     const users = await User.find(query)
-      .sort({ createdAt: -1 })
+      .sort(sortOptions)
       .limit(pageSize)
       .skip(page * pageSize);
     return { users };
