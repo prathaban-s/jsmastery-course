@@ -18,6 +18,7 @@ interface Props {
   };
   searchParams: {
     filter?: string;
+    page?: string;
   };
 }
 
@@ -100,6 +101,7 @@ const QuestionDetail = async ({ params, searchParams }: Props) => {
         userId={user._id.toString()}
         totalAnswers={question.answers.length}
         filter={searchParams?.filter}
+        page={searchParams?.page}
       />
       <Answer
         authorId={JSON.stringify(user._id)}
