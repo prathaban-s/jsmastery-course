@@ -93,5 +93,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Deleted", user: mongoUser });
   }
 
-  return new Response("", { status: 200 });
+  return new NextResponse("", { status: 200 });
 }
