@@ -27,6 +27,7 @@ import {
 } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/context/ThemeProvider";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   mongoUserId: string;
@@ -75,6 +76,10 @@ const Question = ({
           path: pathname,
         });
 
+        toast({
+          title: `Question created successfully`,
+        });
+
         router.push("/");
       } else {
         await updateQuestionById({
@@ -82,6 +87,9 @@ const Question = ({
           title: values.title,
           content: values.explanation,
           path: pathname,
+        });
+        toast({
+          title: `Question updated successfully`,
         });
         router.push(`/question/${questionId || ""}`);
       }

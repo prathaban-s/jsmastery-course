@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { updateUser } from "@/lib/actions/user.action";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   clerkId: string;
@@ -60,6 +61,9 @@ const Profile = ({ clerkId, name, location, bio, username }: Props) => {
           bio: values.bio,
         },
         path: pathname,
+      });
+      toast({
+        title: `Profile updated successfully`,
       });
       router.push(`/profile/${clerkId}`);
     } catch (err) {

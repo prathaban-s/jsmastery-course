@@ -18,6 +18,7 @@ import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname } from "next/navigation";
 import { AnswerSchema } from "@/lib/validation";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   question: string;
@@ -57,6 +58,9 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         const editor = editorRef.current as any;
         editor.setContent(formattedAnswer);
       }
+      toast({
+        title: `Generated AI answer`,
+      });
     } catch (err) {
       console.log(err);
     } finally {
@@ -78,6 +82,9 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         const editor = editorRef.current as any;
         editor.setContent("");
       }
+      toast({
+        title: `Answer submitted successfully`,
+      });
     } catch (error) {
       console.log(error);
     } finally {
