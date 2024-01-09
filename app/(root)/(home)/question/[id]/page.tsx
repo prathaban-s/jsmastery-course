@@ -97,7 +97,7 @@ const QuestionDetail = async ({ params, searchParams }: Props) => {
         ))}
       </div>
       <AllAnswers
-        questionId={JSON.stringify(question._id)}
+        questionId={question._id.toString()}
         userId={user._id.toString()}
         totalAnswers={question.answers.length}
         filter={searchParams?.filter}
