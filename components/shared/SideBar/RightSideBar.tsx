@@ -26,7 +26,7 @@ const RightSideBar = async () => {
                   {item.title}
                 </p>
                 <Image
-                  src="./assets/icons/chevron-right.svg"
+                  src="/assets/icons/chevron-right.svg"
                   alt="arrow-right"
                   height={15}
                   width={15}
