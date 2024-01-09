@@ -82,12 +82,12 @@ const Profile = ({ clerkId, name, location, bio, username }: Props) => {
           name="name"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>
+              <FormLabel className="paragraph-regular text-dark400_light800">
                 Name <span className="text-primary-500">*</span>{" "}
               </FormLabel>
               <FormControl>
                 <Input
-                  className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   placeholder="name"
                   {...field}
                 />
@@ -101,12 +101,12 @@ const Profile = ({ clerkId, name, location, bio, username }: Props) => {
           name="username"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>
+              <FormLabel className="paragraph-regular text-dark400_light800">
                 Username <span className="text-primary-500">*</span>{" "}
               </FormLabel>
               <FormControl>
                 <Input
-                  className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   placeholder="username"
                   {...field}
                 />
@@ -120,12 +120,12 @@ const Profile = ({ clerkId, name, location, bio, username }: Props) => {
           name="location"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>
+              <FormLabel className="paragraph-regular text-dark400_light800">
                 Location <span className="text-primary-500">*</span>{" "}
               </FormLabel>
               <FormControl>
                 <Input
-                  className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   placeholder="location"
                   {...field}
                 />
@@ -139,12 +139,12 @@ const Profile = ({ clerkId, name, location, bio, username }: Props) => {
           name="bio"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>
+              <FormLabel className="paragraph-regular text-dark400_light800">
                 Bio <span className="text-primary-500">*</span>{" "}
               </FormLabel>
               <FormControl>
                 <Textarea
-                  className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                  className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                   placeholder="What's special about you?"
                   {...field}
                 />
