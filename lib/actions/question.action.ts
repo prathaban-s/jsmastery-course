@@ -16,12 +16,11 @@ import { revalidatePath } from "next/cache";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/iteraction.model";
 import { FilterQuery } from "mongoose";
-import console from "console";
 
 export const getQuestions = async (params: GetQuestionsParams) => {
   try {
     connnectToDatabase();
-    const { page = 1, pageSize = 2, searchQuery, filter } = params;
+    const { page = 1, pageSize = 10, searchQuery, filter } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -125,11 +124,24 @@ export async function createQuestion(params: CreateQuestionParams) {
         },
       },
     });
+    await Interaction.create({
+      user: author,
+      action: "ask_question",
+      question: question._id,
+      tags: tagDocuments,
+    });
+
+    await User.findByIdAndUpdate(author, {
+      $inc: { reputation: 5 },
+    });
 
     revalidatePath(path);
 
     // Need to give reputaion for user
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
 
 export const updateQuestionById = async (params: EditQuestionParams) => {
@@ -184,7 +196,13 @@ export const upvoteQuestion = async (params: QuestionVoteParams) => {
       throw new Error("Question not found");
     }
 
-    // Incroment author reputation
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
+
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (err) {
@@ -221,8 +239,6 @@ export const downvoteQuestion = async (params: QuestionVoteParams) => {
     if (!question) {
       throw new Error("Question not found");
     }
-
-    // Incroment author reputation
 
     revalidatePath(path);
   } catch (err) {

@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/iteraction.model";
+import User from "@/database/user.model";
 
 export const createAnswer = async (params: CreateAnswerParams) => {
   try {
@@ -22,6 +23,17 @@ export const createAnswer = async (params: CreateAnswerParams) => {
     await Question.findByIdAndUpdate(question, {
       $push: { answers: newAnswer._id },
     });
+
+    await Interaction.create({
+      user: author,
+      action: "create_answer",
+      question: newAnswer._id,
+    });
+
+    await User.findByIdAndUpdate(author, {
+      $inc: { reputation: 10 },
+    });
+
     revalidatePath(path);
   } catch (err) {
     console.log(err);
@@ -110,7 +122,13 @@ export const upvoteAnswer = async (params: AnswerVoteParams) => {
       throw new Error("Answer not found");
     }
 
-    // Incroment author reputation
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -2 : 2 },
+    });
+
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (err) {
