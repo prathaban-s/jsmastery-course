@@ -16,9 +16,11 @@ const ProfileDetailPage = async ({ params }: URLProps) => {
   const { userId } = auth();
 
   const clerkId = params.id;
-  const { user, totalAnswers, totalQuestions } = await getUserInfo({
-    userId: clerkId,
-  });
+  const { user, totalAnswers, totalQuestions, badgeCounts } = await getUserInfo(
+    {
+      userId: clerkId,
+    }
+  );
   return (
     <>
       <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
@@ -74,7 +76,12 @@ const ProfileDetailPage = async ({ params }: URLProps) => {
           </SignedIn>
         </div>
       </div>
-      <Stats totalQuestions={totalQuestions} totalAnswers={totalAnswers} />
+      <Stats
+        totalQuestions={totalQuestions}
+        totalAnswers={totalAnswers}
+        badgeCounts={badgeCounts}
+        reputation={user.reputation}
+      />
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-posts" className="w-[400px] flex-1">
           <TabsList className="background-light800_dark400 min-h-[42px] p-1">
